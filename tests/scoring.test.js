@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { questions, roles } from "../src/content.js";
+import { getContent } from "../src/i18n.js";
 import { scoreAnswers } from "../src/scoring.js";
 
 const dimensionKeys = ["energy", "pressure", "direction", "connection"];
@@ -167,4 +168,79 @@ test("scoring is deterministic and leaves answers and shared content unchanged",
     fresh.metrics.every((metric) => metric.value >= 0 && metric.value <= 100),
   );
   assert.notEqual(fresh.evidence[0], "local-only");
+});
+
+test("language changes result copy without changing scores or creature selection", async (t) => {
+  const roleExamples = [
+    ["night-owl", [1, 9, 6, 6]],
+    ["jellyfish", [1, 4, 6, 6]],
+    ["cactus", [9, 9, 9, 0]],
+    ["snail", [9, 0, 0, 9]],
+    ["potato", [0, 0, 6, 6]],
+    ["cat", [9, 0, 6, 0]],
+    ["duck", [9, 6, 6, 6]],
+    ["sprout", [6, 0, 6, 6]],
+  ];
+  const han = /\p{Script=Han}/u;
+  const englishContent = getContent("en");
+  for (const [id, totals] of roleExamples) {
+    await t.test(id, () => {
+      const answers = Object.freeze(answersForTotals(totals));
+      const zh = scoreAnswers(answers);
+      const en = scoreAnswers(answers, "en");
+      assert.deepEqual(scoreAnswers(answers, "zh"), zh);
+      assert.equal(en.role.id, id);
+      assert.equal(en.role.id, zh.role.id);
+      assert.deepEqual(metrics(en), metrics(zh));
+      assert.deepEqual(
+        en.role,
+        englishContent.roles.find((role) => role.id === id),
+      );
+      assert.notEqual(en.role.name, zh.role.name);
+      assert.equal(en.evidence.length, zh.evidence.length);
+      for (const metric of en.metrics) {
+        assert.ok(metric.label.trim().length > 0);
+        assert.ok(!han.test(metric.label), metric.label);
+        assert.notEqual(
+          metric.label,
+          zh.metrics.find(({ key }) => key === metric.key).label,
+        );
+      }
+      for (const explanation of en.evidence) {
+        assert.ok(explanation.trim().length > 0);
+        assert.ok(!han.test(explanation), explanation);
+      }
+    });
+  }
+});
+
+test("English scoring does not mutate inputs or leak result changes into either language", () => {
+  const answers = Object.freeze(answersForTotals([6, 0, 6, 6]));
+  const contentSnapshot = (language) => {
+    const { questions, roles, contextOptions } = getContent(language);
+    return { questions, roles, contextOptions };
+  };
+  const before = structuredClone({
+    answers,
+    zh: contentSnapshot("zh"),
+    en: contentSnapshot("en"),
+  });
+  const zhBaseline = scoreAnswers(answers);
+  const enBaseline = scoreAnswers(answers, "en");
+  const editable = scoreAnswers(answers, "en");
+  editable.role.name = "Changed locally";
+  editable.role.tags.push("local tag");
+  editable.metrics[0].label = "local label";
+  editable.metrics[0].value = -10;
+  editable.evidence.push("local note");
+  assert.deepEqual(scoreAnswers(answers, "en"), enBaseline);
+  assert.deepEqual(scoreAnswers(answers), zhBaseline);
+  assert.deepEqual(
+    {
+      answers,
+      zh: contentSnapshot("zh"),
+      en: contentSnapshot("en"),
+    },
+    before,
+  );
 });

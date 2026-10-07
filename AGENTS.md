@@ -5,6 +5,7 @@
 - The current application uses no API credentials. If adding an API, put credentials in a server-side `.env` and access them through a backend. Never embed them in source or `VITE_*` variables.
 - Keep the tone playful and caring with boundaries: jokes target life's demands, not the person or their identity. Describe temporary states, not diagnoses or permanent personality labels.
 - The current visual direction is absurd office life: glitch windows, employee badges, heavy black outlines, cobalt blue and acid lime. Characters look tired and deadpan; avoid pastel baby mascots and generic motivational comfort.
+- Keep Chinese and English complete across questions, results, explanations, accessibility labels, sharing and PNG export. Localize humour naturally while preserving question order, IDs, scores and role rules; switching languages must retain answers and progress.
 - Public sharing URLs must not include the user's personal name or GitHub username. Prefer an independent neutral hosting project. Do not invent a domain or claim a new URL is live until the hosting platform returns it and access is verified.
 - Use `npm ci` for reproducible installation, `npm test` for scoring checks, and `npm run build` for the production build. Validate affected browser interactions for UI changes.
 - Cloud tasks already have an isolated checkout. Use it; do not create Git worktrees unless the user explicitly requests one.

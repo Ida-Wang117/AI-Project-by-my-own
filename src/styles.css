@@ -2485,6 +2485,184 @@ a {
     gap: 5px;
   }
 }
+.language-switch {
+  display: flex;
+  flex-shrink: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.language-switch button {
+  padding: 9px 10px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.language-switch button + button {
+  border-left: 1px solid var(--ink);
+}
+.language-switch button[aria-pressed="true"] {
+  background: var(--blue);
+  color: #fff;
+}
+.language-switch button:hover:not([aria-pressed="true"]) {
+  background: var(--lime);
+}
+html[lang="en"] .brand {
+  font-size: 22px;
+}
+html[lang="en"] .hero h1 {
+  font-size: clamp(58px, 6.3vw, 92px);
+  letter-spacing: -3px;
+  line-height: 1.1;
+}
+html[lang="en"] .hero-actions {
+  flex-wrap: wrap;
+}
+html[lang="en"] .hero-actions .button {
+  font-size: 13px;
+}
+html[lang="en"] .hero-footnote {
+  flex-wrap: wrap;
+}
+html[lang="en"] .office-stamp {
+  font-size: 9px;
+}
+html[lang="en"] .art-heading > span:first-child {
+  max-width: 66%;
+  line-height: 1.4;
+}
+html[lang="en"] .art-sticker {
+  font-size: 11px;
+}
+html[lang="en"] .label-cactus {
+  top: 292px;
+  font-size: 9px;
+}
+html[lang="en"] .art-bottom {
+  gap: 10px;
+}
+html[lang="en"] .art-bottom > span {
+  max-width: 48%;
+  text-align: right;
+}
+html[lang="en"] .species-text h3 {
+  line-height: 1.4;
+  min-height: 2.8em;
+}
+html[lang="en"] .result-copy h1,
+html[lang="en"] .question-panel h1 {
+  overflow-wrap: anywhere;
+}
+html[lang="en"] .portrait-footnote {
+  max-width: calc(100% - 36px);
+  text-align: center;
+  line-height: 1.5;
+}
+html[lang="en"] .metric > div:first-child {
+  gap: 8px;
+  align-items: start;
+}
+html[lang="en"] .metric > div:first-child > span:last-child {
+  flex-shrink: 0;
+}
+html[lang="en"] .tiny-action {
+  flex-wrap: wrap;
+}
+html[lang="en"] .tiny-action > .button {
+  flex-shrink: 0;
+}
+@media (max-width: 1000px) {
+  .header-inner nav button:nth-child(2),
+  .header-inner nav button:nth-child(3) {
+    display: none;
+  }
+}
+@media (max-width: 850px) {
+  html[lang="en"] .hero h1 {
+    font-size: 57px;
+  }
+  html[lang="en"] .label-owl {
+    font-size: 8px;
+  }
+  html[lang="en"] .art-sticker {
+    font-size: 9px;
+  }
+}
+@media (max-width: 600px) {
+  .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 14px 0;
+    gap: 12px;
+  }
+  html[lang="en"] .brand {
+    font-size: 18px;
+  }
+  .language-switch {
+    justify-self: end;
+  }
+  .language-switch button {
+    padding: 8px;
+    font-size: 10px;
+  }
+  .header-cta {
+    grid-column: 1 / -1;
+    justify-self: end;
+    margin: 0;
+    padding: 8px 12px;
+  }
+  html[lang="en"] .hero h1 {
+    font-size: clamp(52px, 14vw, 74px);
+    letter-spacing: -2px;
+  }
+  html[lang="en"] .hero-kicker {
+    font-size: 8px;
+  }
+  html[lang="en"] .hero-actions {
+    align-items: start;
+    gap: 14px;
+  }
+  html[lang="en"] .hero-actions .button {
+    padding: 15px 17px;
+    font-size: 12px;
+  }
+  html[lang="en"] .home-share {
+    text-align: left;
+    line-height: 1.7;
+  }
+  html[lang="en"] .label-cactus {
+    top: 265px;
+    font-size: 7px;
+  }
+  html[lang="en"] .section-heading h2 {
+    font-size: 27px;
+  }
+  html[lang="en"] .how-intro h2 {
+    font-size: 30px;
+  }
+  html[lang="en"] .quiz-topline {
+    gap: 12px;
+  }
+  html[lang="en"] .context-panel h1 {
+    font-size: 33px;
+    line-height: 1.3;
+  }
+  html[lang="en"] .result-topline {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  html[lang="en"] .result-actions {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  html[lang="en"] .result-actions .button {
+    font-size: 12px;
+    justify-content: center;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
