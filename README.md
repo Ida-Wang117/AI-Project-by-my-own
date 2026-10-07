@@ -1,10 +1,14 @@
 # 今日物种 · Today's Creature
 
-一面有点嘴欠、但站在你这边的镜子。回答 12 道生活小问题，领养一只代表最近状态的小物种，带走手绘画像、关键词、一句安慰和一个可尝试的小动作。
+人在，状态不在。回答 12 道生活后台小问题，生成一张荒诞办公室状态工牌：粗线条角色、故障提示、吐槽词条和一个不要求你重装人生的临时处理方案。
 
 面向在读与留学生、上班族、照顾家庭的人、创业者和正在探索下一步的人。玩梗对事不对人；身份选择不参与评分。
 
+第二版采用故障弹窗、工牌和粗黑线撞色视觉。结果吐槽任务、内耗和无限响应要求，减少泛泛的励志话；评分仍沿用透明规则，8 个角色 ID 保持兼容旧分享链接。
+
 ![今日物种首页预览](docs/preview.png)
+
+[查看状态工牌样例](docs/status-card.png)
 
 ## 它在测什么
 
@@ -29,6 +33,7 @@ npm run dev
 npm test          # Node 内置测试：评分、规则优先级、输入校验和纯函数行为
 npm run build    # 生成 dist/
 npm run preview  # 本地预览构建产物，默认 http://localhost:4173
+npm run package:site # 构建并生成不含个人标识的直接上传 ZIP
 ```
 
 测试脚本不需要外部服务。浏览器交互包括答题、返回修改、继续标签页草稿、结果说明、完整图鉴、复制分享链接及 PNG 状态卡导出。PNG 在浏览器本地绘制，不调用图片生成 API。
@@ -49,6 +54,7 @@ npm run preview  # 本地预览构建产物，默认 http://localhost:4173
 src/
   App.jsx          首页、答题、结果、分享与本地 PNG 导出
   Creature.jsx     8 种原创 SVG 小物种
+  cardExport.js    本地绘制故障工牌 PNG
   content.js       题目、身份选项和角色文案
   scoring.js       透明的评分与匹配规则
   styles.css       页面样式、移动端适配
@@ -59,6 +65,10 @@ vite.config.js     Vite 配置，相对资源路径
 ```
 
 ## 部署
+
+若分享网址不能出现 GitHub 用户名，优先使用免费的 Cloudflare Pages Direct Upload，见[匿名网址发布步骤](docs/anonymous-hosting.md)。执行 `npm run package:site` 会生成 `/tmp/todays-creature-site.zip`；打包前检查构建文件中的姓名、仓库地址、邮箱和密钥特征。ZIP 仅包含公开网页文件，不包含 Git 历史或逐题答案。ZIP 打包需要 Python 3；当前云环境已提供。
+
+上传 ZIP 需要在你自己的 Cloudflare 账号中创建一个中性名称的 Pages 项目。实际 `pages.dev` 地址以平台分配为准；没有进行这一步时，原 GitHub Pages 地址仍含用户名。
 
 执行 `npm ci && npm run build`，把生成的 `dist/` 发布到支持静态站点的服务即可。不需要服务器运行时或环境密钥。
 

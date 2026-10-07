@@ -11,7 +11,7 @@ const dimensions = [
 // 每维 3 题、每题 0–3 分：总分 / 9 × 100，四舍五入。
 // 压力越高表示负荷越大；其他维度越高表示该项资源越充足。
 // 重叠时按下面顺序取第一个匹配项，优先照顾压力与精力的组合：
-// 1. 脑内放映员：压力 >= 67，精力 <= 44。
+// 1. 脑内开会机：压力 >= 67，精力 <= 44。
 // 2. 仙人掌：压力 >= 67，支持 <= 44。
 // 3. 水母：精力 <= 33，压力 > 33（低压的低精力可匹配土豆）。
 // 4. 蜗牛：方向 <= 33。
@@ -36,7 +36,7 @@ const roleRules = [
   {
     id: "jellyfish",
     matches: ({ energy, pressure }) => energy <= 33 && pressure > 33,
-    reason: "精力余量偏少，而日常负荷还在；因此这次更像一只需要补电的水母。",
+    reason: "精力余量偏少，而日常负荷还在；因此这次匹配到了人形低电量弹窗。",
     focus: ["energy", "pressure"],
   },
   {
@@ -50,7 +50,7 @@ const roleRules = [
     id: "potato",
     matches: ({ energy, pressure }) => energy <= 44 && pressure <= 44,
     reason:
-      "精力还需要恢复，但当前事情的负荷相对可控，所以这次匹配到了回血土豆。",
+      "精力还需要恢复，但当前事情的负荷相对可控，所以这次匹配到了暂停营业土豆。",
     focus: ["energy", "pressure"],
   },
   {
@@ -65,7 +65,7 @@ const roleRules = [
     id: "duck",
     matches: ({ pressure }) => pressure >= 56,
     reason:
-      "事情的负荷仍然偏多，同时其他资源还留着抓手，因此这次匹配到了忙碌小鸭。",
+      "事情的负荷仍然偏多，同时其他资源还留着抓手，因此这次匹配到了全自动兜底鸭。",
     focus: ["pressure", "direction"],
   },
   {
