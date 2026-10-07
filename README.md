@@ -62,7 +62,18 @@ vite.config.js     Vite 配置，相对资源路径
 
 执行 `npm ci && npm run build`，把生成的 `dist/` 发布到支持静态站点的服务即可。不需要服务器运行时或环境密钥。
 
-也可以用 GitHub Pages 发布 `dist/`：在仓库设置中配置 Pages，并使用构建工作流或静态文件发布流程。`vite.config.js` 使用 `base: './'`，以便资源路径适配仓库子目录；如改为固定部署路径，请相应调整 `base`。此项目通过查询参数分享结果，无需配置客户端路由回退。
+### GitHub Pages：第一次开启
+
+GitHub 代码分支链接只能查看源码。要实际打开网站，先将网页发布到 `gh-pages` 分支，再开启仓库的 Pages：
+
+1. 从已提交的功能分支执行 `npm run publish:pages`。它会测试、构建，并把静态网页推送到独立的 `gh-pages` 发布分支，不修改 `main`，不把 `dist/` 提交到源码分支。
+2. 打开[仓库 Pages 设置](https://github.com/Ida-Wang117/AI-Project-by-my-own/settings/pages)。
+3. 在 **Build and deployment** 中，**Source** 选择 **Deploy from a branch**；**Branch** 选择 **gh-pages**，目录选择 **/ (root)**，点击 **Save**。
+4. 等待 GitHub 的 Pages 发布完成，以设置页显示的 **Visit site** 地址为准。发布完成前，网站地址可能仍返回 404。
+
+后续在新功能分支提交代码，再运行 `npm run publish:pages` 即可刷新网站。发布脚本保留 `gh-pages` 历史，不强制推送；如果发现其他站点已经使用这个发布分支，会停止而不覆盖。该分支只放公开网页文件，不包含回答、密钥或 `node_modules`。
+
+`vite.config.js` 使用 `base: './'`，以便资源路径适配仓库子目录；如改为固定部署路径，请相应调整 `base`。此项目通过查询参数分享结果，无需配置客户端路由回退。
 
 **将代码提交到 GitHub 与网站上线是两步不同的操作。**推送分支只保存源码；上线还需要配置静态托管和执行发布。本 README 不代表站点已经部署。
 
