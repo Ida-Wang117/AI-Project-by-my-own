@@ -179,3 +179,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Website dependencies, build output and local credentials
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
