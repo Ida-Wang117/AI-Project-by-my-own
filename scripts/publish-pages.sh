@@ -38,11 +38,17 @@ if [[ -n "$remote_ref" ]]; then
     printf '%s\n' 'An unrelated gh-pages site already exists. It was left unchanged.' >&2
     exit 1
   fi
+  if [[ -f "$publish_dir/CNAME" ]]; then
+    cp "$publish_dir/CNAME" "$publish_dir/.git/todays-creature-CNAME"
+  fi
   git -C "$publish_dir" rm -r --quiet --ignore-unmatch .
 fi
 
 cp -R "$project_dir/dist/." "$publish_dir/"
 cp "$project_dir/.gitignore" "$publish_dir/.gitignore"
+if [[ -f "$publish_dir/.git/todays-creature-CNAME" ]]; then
+  cp "$publish_dir/.git/todays-creature-CNAME" "$publish_dir/CNAME"
+fi
 touch "$publish_dir/.nojekyll"
 printf '%s\n' "Today's Creature static site" > "$publish_dir/.todays-creature-pages"
 printf '%s\n' "$source_commit" > "$publish_dir/source-commit.txt"
