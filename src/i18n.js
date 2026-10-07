@@ -33,6 +33,14 @@ export function createShareUrl(href, language, roleId = null) {
 }
 
 const english = {
+  "状态已装盒。": "Your state is boxed up.",
+  "里面装着近两周的你，附赠一句欠嘴点评。":
+    "Your last two weeks, plus one mildly rude observation.",
+  拆开看看: "Open my box",
+  "按你的回答装盒。开盒只揭晓，不重新抽签。":
+    "Packed from your answers. Opening reveals the match; it doesn't reroll it.",
+  "今天就做这三步。": "Try these three small moves.",
+  "为什么拆到这只？": "Why did I unbox this one?",
   今日物种: "Today's Creature",
   "今日物种 / INTERNAL USE": "TODAY'S CREATURE / INTERNAL USE",
   "今日物种 · 原创状态小测": "Today's Creature · An original status check-in",
@@ -63,8 +71,8 @@ const english = {
   "先把「我没事」放旁边。": "Put ‘I'm fine’ on hold for a minute.",
   "12 道题，查查最近哪个后台在偷跑。":
     "12 questions. Find out what's running in your head.",
-  "不发优秀证明，发一张你的状态工牌。":
-    "No gold stars. Just a badge for your current status.",
+  "拆个状态盲盒，看看谁在加班。":
+    "Unbox your current state. See who is still clocked in.",
   查一下我的后台: "Check my background apps",
   "约 3 分钟": "About 3 minutes",
   "无需登录，不交周报。": "No login. No weekly report.",
@@ -111,9 +119,9 @@ const english = {
   登记后台现状: "Check the background apps",
   "醒来还有多少电？闲下来脑子在干嘛？这里只问生活，不问你未来五年的战略布局。":
     "How much charge do you wake up with? What does your brain do on a break? We're asking about life, not your five-year strategic plan.",
-  领取状态工牌: "Collect your status badge",
-  "一个有点欠的角色，几个不端着的词条。为什么匹配到它，报告里有依据。":
-    "A slightly cheeky character and a few honest tags. The report shows why you matched. No psychic HR involved.",
+  拆开状态盲盒: "Open your state box",
+  "一只盲盒角色，一句欠嘴锐评，三步能动手的建议。":
+    "One deadpan toy, one sharp roast and three small moves you can actually try.",
   关掉一个多余后台: "Close one extra background app",
   "不给人生开药方。比如今天少接一件事，或者别在凌晨两点给自己写差评。":
     "One small option: take on one less task, or stop writing your own one-star review at 2 a.m. No life overhaul required.",
@@ -133,7 +141,7 @@ const english = {
   "回答近两周就行。不要开始自我检讨。":
     "THE LAST TWO WEEKS. NO SELF-CRITICISM REQUIRED.",
   上一步: "Back",
-  生成我的状态工牌: "Make my status badge",
+  生成我的状态盲盒: "Make my state box",
   下一题: "Next",
   "登记完毕。接下来只讲状态，不评优秀员工。":
     "Check-in done. Up next: a status report, not Employee of the Month.",
@@ -148,17 +156,17 @@ const english = {
     "No life-advice summit. Just a check-in report.",
   测测我的状态: "Check my own status",
   重新登记: "Check in again",
-  "这是朋友分享的状态工牌，不包含私人答案。你的后台情况，需要自己登记。":
-    "This is a shared status badge, with no private answers. To check your own background apps, take the quiz yourself.",
+  "这是朋友拆出的状态盲盒，不包含私人答案。你的盒子，得自己回答问题来拆。":
+    "This is a shared state box, with no private answers. Answer the questions to open your own.",
   "有效期：近两周": "WINDOW: LAST 2 WEEKS",
   "仅作状态嘴替，不作绩效证明。":
     "A badge for how things feel. Not a performance certificate.",
-  本档案登记为: "THIS FILE IS REGISTERED AS",
-  "你的后台岗位，暂定为": "YOUR CURRENT BACKGROUND JOB",
+  朋友拆出的是: "YOUR FRIEND UNBOXED",
+  你拆到的是: "YOU UNBOXED",
   本窗口意见: "A note from this desk",
   "— 本窗口不提供人生 KPI": "— This desk does not issue life KPIs",
-  "正在制牌…": "Making your badge…",
-  保存我的状态工牌: "Save my status badge",
+  "正在制卡…": "Making your card…",
+  保存我的盲盒卡: "Save my box card",
   复制分享链接: "Copy share link",
   "不是凭空开嘴。": "There's a method to the roast.",
   "下面是匹配依据。": "Here's why you matched.",
@@ -198,12 +206,12 @@ const english = {
     "Link copied. It shares the character, not your answers.",
   "复制暂不可用，可以直接复制地址栏中的结果链接。":
     "Copy isn't available here. You can copy the result link from the address bar.",
-  "工牌已生成。不建议拿去找老板加薪。":
-    "Badge saved. Probably won't get you a pay rise.",
-  "工牌导出失败，试试复制分享链接。":
-    "The badge couldn't be saved. Try copying the share link instead.",
-  "人在，状态不在。12 道生活后台小问题，生成你的故障工牌。梗对生活，不对你；不交周报，不发鸡汤。":
-    "Here in body, elsewhere in brain. 12 questions, one deadpan status badge. We roast the workload, not you. No weekly reports or motivational sermons.",
+  "盲盒卡已保存。别拿去当绩效证明。":
+    "Box card saved. Please do not submit it as a performance review.",
+  "盲盒卡导出失败，试试复制分享链接。":
+    "The box card could not be saved. Try copying the share link instead.",
+  "人在，状态不在。12 道题，拆一盒状态盲盒：短名字、欠嘴锐评、三步具体建议。梗对生活，不对你。":
+    "12 questions. One original state box: a short name, a sharp roast and three concrete steps. We roast the workload, not you.",
 };
 
 export function translate(language, key, values = {}) {

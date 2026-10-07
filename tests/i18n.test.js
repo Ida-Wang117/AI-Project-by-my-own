@@ -49,6 +49,7 @@ test("English creatures keep stable identities and translate every required copy
     "description",
     "comfort",
     "tinyAction",
+    "actionDuration",
     "systemNotice",
     "doNot",
   ];
@@ -64,6 +65,52 @@ test("English creatures keep stable identities and translate every required copy
     assert.ok(role.tags.length > 0);
     for (const [tagIndex, tag] of role.tags.entries())
       assertEnglishText(tag, `${role.id}.tags[${tagIndex}]`);
+  }
+});
+
+test("blind-box creatures have short Chinese names and three complete bilingual action steps", () => {
+  const zh = getContent("zh");
+  const en = getContent("en");
+  assert.equal(
+    new Set(zh.roles.map((role) => role.name)).size,
+    zh.roles.length,
+  );
+  for (const [index, role] of zh.roles.entries()) {
+    assert.match(
+      role.name,
+      /^\p{Script=Han}{2,3}$/u,
+      `${role.id} needs a 2–3 character Chinese name`,
+    );
+    for (const [language, translated] of [
+      ["zh", role],
+      ["en", en.roles[index]],
+    ]) {
+      assert.equal(typeof translated.actionDuration, "string");
+      assert.ok(
+        translated.actionDuration.trim().length > 0,
+        `${role.id}.${language}.actionDuration`,
+      );
+      assert.ok(
+        Array.isArray(translated.actionSteps),
+        `${role.id}.${language}.actionSteps`,
+      );
+      assert.equal(
+        translated.actionSteps.length,
+        3,
+        `${role.id}.${language} needs three actionable steps`,
+      );
+      for (const [stepIndex, step] of translated.actionSteps.entries()) {
+        assert.deepEqual(Object.keys(step).sort(), ["body", "title"]);
+        for (const field of ["title", "body"]) {
+          const label = `${role.id}.${language}.actionSteps[${stepIndex}].${field}`;
+          if (language === "en") assertEnglishText(step[field], label);
+          else {
+            assert.equal(typeof step[field], "string", label);
+            assert.ok(step[field].trim().length > 0, label);
+          }
+        }
+      }
+    }
   }
 });
 

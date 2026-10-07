@@ -186,155 +186,285 @@ export const contextOptions = [
 export const roles = [
   {
     id: "night-owl",
-    name: "The 3AM Committee",
+    name: "Overtime Brain",
     en: "UNPAID NIGHT SHIFT",
-    tagline: "You clocked out. Your brain booked another meeting.",
-    roast: "An unpaid meeting with no agenda, no minutes, and somehow no exit.",
+    tagline: "You clocked out. The background apps ordered a refill.",
+    roast:
+      "Life bundles high pressure and low battery as 'just keep going.' Who ordered the unlimited refills?",
     description:
-      "Your answers suggest a heavy workload and not much fuel left. Unfinished business can keep pulling up a chair when you're trying to rest.",
+      "Your workload is high and your energy reserves are low. Another self-improvement project would add to the queue.",
     comfort:
-      "Tonight's unresolved stuff can go on paper, not on your pillow. Tomorrow's problems don't need an overnight shift.",
+      "Parking a problem won't solve it, but you can stop working on it tonight. The task can wait without taking your sleep as a deposit.",
     tags: ["Brain overtime", "Low on fuel", "Request to adjourn"],
     tinyAction:
-      "Write down the loudest unfinished thing and one first step for tomorrow. Put the note away; no extra agenda items for ten minutes.",
+      "Hand one noisy task over to tomorrow. Three minutes, one note.",
+    actionDuration: "3 min",
+    actionSteps: [
+      {
+        title: "Name one thing",
+        body: "Take 60 seconds to write the loudest unfinished task in one sentence. Stop there; no full backstory.",
+      },
+      {
+        title: "Give tomorrow a slot",
+        body: "Take 60 seconds to fill in: 'Tomorrow at ___, I'll start with ___.' Pick a first step you can begin within ten minutes.",
+      },
+      {
+        title: "Close the meeting",
+        body: "Use 60 seconds to set a reminder and turn the note over. New thought? 'Logged. Tomorrow's shift.'",
+      },
+    ],
     statusCode: "MTG-003",
-    systemNotice: "Meeting overran. Life is still adding agenda items.",
-    doNot: "Replay every conversation from today in bed.",
+    systemNotice: "Extension denied. No new facts, no extra debrief.",
+    doNot:
+      "Finish tomorrow's first-step note, then hold a third life-review meeting tonight.",
     color: "#dce5ff",
   },
   {
     id: "jellyfish",
-    name: "Low-Battery Human",
+    name: "Leaky Battery",
     en: "PLEASE CONNECT CHARGER",
-    tagline: "Message received. Processing power currently unavailable.",
-    roast: "Life keeps requesting full brightness in battery-saver mode.",
+    tagline: "Updates paused. The battery is still negotiating.",
+    roast:
+      "Life wants unlimited service while charging your battery per task. Even a phone company would take notes.",
     description:
-      "Your available energy is low, but tasks keep arriving. Even small jobs may feel expensive right now.",
+      "Your energy reserves are low, but the deliveries keep coming. Even small tasks may be expensive right now.",
     comfort:
-      "A non-urgent task can wait, and so can a reply. Reading a message isn't signing a contract for instant responses.",
+      "Moving one non-urgent task leaves a task for later; it won't empty the whole queue. Take ten minutes without adding a rest-efficiency review.",
     tags: ["Battery saver", "Too many tabs", "Charger wanted"],
-    tinyAction:
-      "Pick one non-urgent task and move it to tomorrow. Use the ten minutes you free up to drink water, close your eyes, or sit quietly.",
+    tinyAction: "Stop one energy leak, then take ten minutes off.",
+    actionDuration: "12 min",
+    actionSteps: [
+      {
+        title: "Find one that can wait",
+        body: "Take 60 seconds to pick one non-urgent task: a reply or laundry, for example. Just one.",
+      },
+      {
+        title: "Give it a new time",
+        body: "Use 60 seconds to reschedule, or send: 'I'm tied up now; I'll reply by ___.' Only for a non-urgent request.",
+      },
+      {
+        title: "Pause for ten",
+        body: "Set a ten-minute timer. Drink water or sit quietly, without checking messages. Decide whether to resume when it rings.",
+      },
+    ],
     statusCode: "PWR-003",
-    systemNotice: "Power-saving mode. Nagging does not create a charging port.",
-    doNot: "Squeeze one 'while you're at it' into the charge you have left.",
+    systemNotice:
+      "No bundled 'while you're at it.' That's another process, not a free extra.",
+    doNot:
+      "Move one task out of the gap, then fill it with a different 'tiny' task.",
     color: "#ffa788",
   },
   {
     id: "cactus",
-    name: "Capacity-Full Cactus",
+    name: "Nope Cactus",
     en: "CAPACITY FULL, THANKS",
-    tagline: "Message received. That's not a yes.",
-    roast: "Life has mistaken your manners for an unlimited service plan.",
+    tagline: "Received is a receipt, not a blank cheque.",
+    roast:
+      "Life's budget assumes your time is free and your manners are unlimited. All overruns come out of your pocket.",
     description:
-      "Your workload is high, with less room to speak freely or get backup. Requests keep arriving without checking what you can actually take on.",
+      "Your task load is high, with less room to speak freely or get backup. New requests need more than an upgrade to your capacity.",
     comfort:
-      "'I can't take this on today' is a complete sentence. No three-page apology attachment required.",
+      "A refusal might annoy someone or need another conversation. That's a scheduling cost, not an automatic claim on your overtime.",
     tags: ["Capacity full", "Polite refusal", "No queue-jumping"],
     tinyAction:
-      "Try: 'I can do A today; B will have to wait until Friday.' Choose a deadline you can actually manage.",
+      "State what fits, then ask the requester to choose what goes first.",
+    actionDuration: "3 min",
+    actionSteps: [
+      {
+        title: "Count the actual room",
+        body: "Take 60 seconds to check today's remaining time. Write how much more fits. Zero is an option.",
+      },
+      {
+        title: "Offer a trade-off",
+        body: "Use 60 seconds to draft: 'I can do A; B waits until ___. If B is needed today, A moves back.'",
+      },
+      {
+        title: "Hold the price",
+        body: "After sending, pause for 60 seconds. No 'I'll try to do it all.' If it's urgent, ask which task should go first.",
+      },
+    ],
     statusCode: "CAP-429",
-    systemNotice: "Too many requests. Courtesy is not unlimited capacity.",
-    doNot: "Say 'no problem' before checking how much of a problem it is.",
+    systemNotice:
+      "New requests must name the task they displace. Courtesy does not create capacity.",
+    doNot:
+      "Say 'sure' and sell out your schedule before working out how to cover the cost.",
     color: "#d5fb66",
   },
   {
     id: "snail",
-    name: "Recalculating Snail",
+    name: "Lost Snail",
     en: "RECALCULATING, AGAIN",
-    tagline: "Destination: TBD. Estimated arrival: please stop asking.",
+    tagline: "Destination pending. Please stop selling speed upgrades.",
     roast:
-      "Your life GPS is still loading and already suggesting three detours.",
+      "Destination unconfirmed, but the success industry is already selling the fast lane. No route, just an annual fee.",
     description:
-      "Your priorities, next step, or route feel less clear in these answers. With so many outside signals, it can be harder to hear your own.",
+      "Your answers suggest uncertainty about priorities, the next step, or your own route. Start with one missing piece of information.",
     comfort:
-      "You don't owe anyone a final life plan today. Look up one question, not a stranger's entire CV; the tab bar is already crowded.",
+      "One useful fact may not settle the whole direction. Reduce one unknown today, without turning the search into a verdict on your life.",
     tags: ["Signal pending", "Route recalculating", "One question first"],
     tinyAction:
-      "Write one specific question, such as 'What does this job actually involve?' Spend ten minutes finding one useful fact or asking one person.",
+      "Research one question that affects the next step. Ten minutes, then close the page.",
+    actionDuration: "12 min",
+    actionSteps: [
+      {
+        title: "Shrink the question",
+        body: "Use 60 seconds to replace 'What do I do?' with one question, such as 'How many hours a week would this take?'",
+      },
+      {
+        title: "One search only",
+        body: "Open one page or ask one person. Spend at most ten minutes and note one useful fact. No second round.",
+      },
+      {
+        title: "Name the gap and stop",
+        body: "Use 60 seconds to write 'Next step: ___' or 'Still missing: ___.' No conclusion? Keep the question and stop for today.",
+      },
+    ],
     statusCode: "GPS-404",
     systemNotice:
-      "Destination unconfirmed. Your social feed is not a navigation app.",
+      "Search access limited to one question. Ten people's milestones are not an answer.",
     doNot:
-      "Scrap your entire plan overnight after scrolling other people's updates.",
+      "Buy a 'reinvent your life' crash course before checking the actual facts.",
     color: "#f8e669",
   },
   {
     id: "potato",
-    name: "Out-of-Office Potato",
+    name: "Standby Spud",
     en: "CLOSED FOR MAINTENANCE",
-    tagline: "Output paused. Please leave the potato undisturbed.",
+    tagline: "Standby mode. No deliverables accepted.",
     roast:
-      "An empty slot appeared. Productivity culture immediately sent a calendar invite.",
+      "A gap opens in your day and the to-do list wants rent. Since when did taking a break need a business licence?",
     description:
-      "The task load is relatively manageable, but your energy hasn't quite come back. There's a gap in the schedule that your body may want to keep empty.",
+      "The task load is relatively manageable, but your energy hasn't fully returned. An open slot doesn't have to become more output.",
     comfort:
-      "These fifteen minutes don't need a deliverable or an educational podcast. A break with a progress report is just overtime in sweatpants.",
+      "The tasks may still be there in ten minutes, and you may not feel recharged yet. Keep the gap without adding a performance review for your break.",
     tags: ["Closed for now", "Gap reserved", "No deliverables"],
-    tinyAction:
-      "Keep fifteen minutes free of output: sit, take a short walk, or catch some daylight by a window. No messages on the side.",
+    tinyAction: "Lock the gap. No deliverables for ten minutes.",
+    actionDuration: "10 min",
+    actionSteps: [
+      {
+        title: "Open a gap",
+        body: "Take 30 seconds to set a ten-minute timer. Choose sitting, a window seat, or a short walk. Pick one.",
+      },
+      {
+        title: "Block the extras",
+        body: "If needed: 'I'll be back in ten minutes; I'll look at this then.' Leave the learning materials closed.",
+      },
+      {
+        title: "Skip the review",
+        body: "Stop when the timer rings. No rating or reflection essay. Want more rest? Explicitly set aside five more minutes.",
+      },
+    ],
     statusCode: "BRB-015",
     systemNotice:
-      "Closed for maintenance. 'Just one quick favour' is still a request.",
-    doNot: "Turn a break into a seminar on resting more efficiently.",
+      "This gap is not for lease. No productivity courses or performance reviews.",
+    doNot:
+      "Start a 'how to rest efficiently' tutorial and give yourself homework during the break.",
     color: "#f8e669",
   },
   {
     id: "cat",
     name: "Self-Service Cat",
     en: "SELF-SERVICE, AGAIN",
-    tagline: "Asked for a human. Got transferred back to yourself.",
-    roast: "Life put your request on hold and made you the hold music.",
+    tagline: "Transferred to a human. Somehow, it's still you.",
+    roast:
+      "Your request reaches the desk and life flips the sign to 'self-service.' Advanced system. Same unpaid operator.",
     description:
-      "You have some energy and room in the task queue, but less space to speak freely, lean on others, or relax. Getting backup can feel suspiciously like being sent to self-service.",
+      "You have some energy and room in the queue, but less space to speak freely, get backup, or relax. Give one request a clear destination.",
     comfort:
-      "Make one request specific; if you've already said it, skip the eighth rewrite. A conversation takes two people, so you don't have to staff both desks.",
+      "A polished request can't make someone available or able to help. Say it clearly once; don't turn waiting for a reply into a three-hour defence hearing.",
     tags: ["Less self-service", "Specific requests", "Backup wanted"],
     tinyAction:
-      "Ask someone you feel reasonably safe with: 'Could you listen for ten minutes tonight, without jumping straight to advice?'",
+      "Write one specific, time-limited request. You don't have to staff both desks.",
+    actionDuration: "2 min to set up",
+    actionSteps: [
+      {
+        title: "Choose a contact",
+        body: "Take 60 seconds to choose someone you feel fairly safe with. No one comes to mind? Just write the request; no need to send it.",
+      },
+      {
+        title: "Make the ask specific",
+        body: "Use 60 seconds: 'Could you listen for ten minutes tonight at ___? No advice needed yet.' Just change the time.",
+      },
+      {
+        title: "Close the waiting tab",
+        body: "If sent, don't chase or rewrite for 30 minutes. If unsent, stop here too. Nobody available? Keep it for tomorrow.",
+      },
+    ],
     statusCode: "MSG-000",
     systemNotice:
-      "Waiting for backup. Please do not transfer the request back to its sender.",
+      "Awaiting backup is not an invalid request. Three-page apology attachments disabled.",
     doNot:
-      "Add three pages of apologies because one request hasn't had a response yet.",
+      "Treat one unanswered request as proof that you shouldn't ask for help.",
     color: "#dce5ff",
   },
   {
     id: "duck",
-    name: "The Backup Duck",
+    name: "Backup Duck",
     en: "ONE DUCK, MANY JOBS",
-    tagline: "Above water: all good. Below water: industrial-speed paddling.",
-    roast: "Life saw 'can cope' and quietly changed your plan to 'unlimited.'",
+    tagline: "Looks calm. Paddling at industrial speed.",
+    roast:
+      "Life sees you can cope, so it stacks another task on top. Funny how 'more responsibility' keeps forgetting the checkout.",
     description:
-      "The task load is high, while energy, direction, or support still give you something to work with. Being able to cope can make the queue assume there's always room for more.",
+      "The task load is high, with some energy, direction, or support still available. Being able to cope doesn't create unlimited slots today.",
     comfort:
-      "One less task today won't knock the Earth off its axis. If you're responsible for keeping it spinning, at least invoice it for overtime.",
+      "One less task may mean reshuffling or leaving something awkward. That cost isn't automatically yours; state the trade-off before taking it on.",
     tags: ["One duck, many hats", "Looks under control", "Stop auto-accepting"],
-    tinyAction:
-      "Circle just three priorities on today's list. Give the rest a later slot, and keep one gap where you won't take new requests.",
+    tinyAction: "Circle three priorities. A new task needs an old one to move.",
+    actionDuration: "3 min to set up",
+    actionSteps: [
+      {
+        title: "Circle no more than three",
+        body: "Use 60 seconds to circle up to three priorities. Don't invent a third. Give everything else a later time.",
+      },
+      {
+        title: "Price the extra",
+        body: "Use 60 seconds to prepare: 'Adding this today means ___ moves back. Which would you like first?'",
+      },
+      {
+        title: "Lock one gap",
+        body: "Use 60 seconds to reserve 15 minutes: 'New requests: I'll check at ___.' Don't sneak in a fourth task before then.",
+      },
+    ],
     statusCode: "JOB-008",
     systemNotice:
-      "Queue too long. Competence is not an unlimited subscription.",
-    doNot: "Volunteer at 'Anyone free?' before looking at your own schedule.",
+      "Auto-accept off. Every new task must name the one moving out.",
+    doNot:
+      "Let 'you're so reliable' buy unlimited capacity and take your break for free.",
     color: "#ffa788",
   },
   {
     id: "sprout",
-    name: "Beta-Version Sprout",
+    name: "Beta Sprout",
     en: "STILL IN BETA",
-    tagline: "Occasional glitches. Flawless operation not included.",
-    roast: "Life keeps changing the brief and still demands a final version.",
+    tagline: "Still in testing. Perfect-operation requests declined.",
+    roast:
+      "Life changes the requirements daily, then demands a final draft. The manual is outdated; the inspection form is ready.",
     description:
-      "Your answers don't put one particular combination in charge. Some parts may need tweaking; others are already giving you something to work with.",
+      "No particular combination dominates this snapshot. Look at one area that could use a tweak alongside one that's already working.",
     comfort:
-      "A full-life overhaul can wait; keep one habit that already helps. Change every setting at once and nobody knows which button broke the printer.",
+      "No standout pattern means no need to invent a flaw for the report. Change one thing; if it does not help, do not repeat it. No full-life reinstall.",
     tags: ["Mixed snapshot", "No fixed label", "One change at a time"],
-    tinyAction:
-      "Pick one small thing that's already useful: a walk, eating on time, or putting your phone down before bed. Keep just that one today.",
+    tinyAction: "Try one small thing for up to five minutes. Stop when done.",
+    actionDuration: "Up to 7 min",
+    actionSteps: [
+      {
+        title: "Pick just one",
+        body: "Use 60 seconds to pick something already useful: water, a walk, or clearing a hand-sized patch of desk. Just one.",
+      },
+      {
+        title: "Set a start time",
+        body: "Use 60 seconds to write: 'Today at ___, I'll do this for up to five minutes.' Don't add a second goal.",
+      },
+      {
+        title: "Clock out at five",
+        body: "Try it for up to five minutes; stop sooner if finished. If it doesn't help, don't repeat it. No self-review or extra round.",
+      },
+    ],
     statusCode: "VER-0.9",
     systemNotice:
-      "Beta versions can fluctuate. Perfect-operation requests declined.",
-    doNot: "Use one good day as a reason to load tomorrow with five new goals.",
+      "One change under test. Do not turn one day's status into a permanent label.",
+    doNot:
+      "Use one good moment to give tomorrow five new tasks and call it 'the new me.'",
     color: "#d5fb66",
   },
 ];

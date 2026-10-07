@@ -15,14 +15,14 @@ const dimensions = [
 // 每维 3 题、每题 0–3 分：总分 / 9 × 100，四舍五入。
 // 压力越高表示负荷越大；其他维度越高表示该项资源越充足。
 // 重叠时按下面顺序取第一个匹配项，优先照顾压力与精力的组合：
-// 1. 脑内开会机：压力 >= 67，精力 <= 44。
-// 2. 仙人掌：压力 >= 67，支持 <= 44。
-// 3. 水母：精力 <= 33，压力 > 33（低压的低精力可匹配土豆）。
-// 4. 蜗牛：方向 <= 33。
-// 5. 土豆：精力 <= 44，压力 <= 44。
-// 6. 小猫：支持 <= 44，精力 >= 56，压力 <= 56。
-// 7. 小鸭：压力 >= 56。
-// 8. 发芽：其余组合。每一种角色均存在可达的答案组合。
+// 1. 加班脑：压力 >= 67，精力 <= 44。
+// 2. 拒收掌：压力 >= 67，支持 <= 44。
+// 3. 漏电怪：精力 <= 33，压力 > 33（低压的低精力可匹配待机薯）。
+// 4. 迷路蜗：方向 <= 33。
+// 5. 待机薯：精力 <= 44，压力 <= 44。
+// 6. 自助喵：支持 <= 44，精力 >= 56，压力 <= 56。
+// 7. 兜底鸭：压力 >= 56。
+// 8. 测试苗：其余组合。每一种角色均存在可达的答案组合。
 const roleRules = [
   {
     id: "night-owl",
@@ -44,7 +44,7 @@ const roleRules = [
   {
     id: "jellyfish",
     matches: ({ energy, pressure }) => energy <= 33 && pressure > 33,
-    reason: "精力余量偏少，而日常负荷还在；因此这次匹配到了人形低电量弹窗。",
+    reason: "精力余量偏少，而日常负荷还在；因此这次匹配到了漏电怪。",
     reasonEn:
       "Your energy reserves look low while everyday demands are still there, so this match puts recharging first.",
     focus: ["energy", "pressure"],
@@ -62,7 +62,7 @@ const roleRules = [
     id: "potato",
     matches: ({ energy, pressure }) => energy <= 44 && pressure <= 44,
     reason:
-      "精力还需要恢复，但当前事情的负荷相对可控，所以这次匹配到了暂停营业土豆。",
+      "精力还需要恢复，但当前事情的负荷相对可控，所以这次匹配到了待机薯。",
     reasonEn:
       "Your energy could use some recovery, while the current load looks relatively manageable. This match makes room for a slower pace.",
     focus: ["energy", "pressure"],
@@ -81,7 +81,7 @@ const roleRules = [
     id: "duck",
     matches: ({ pressure }) => pressure >= 56,
     reason:
-      "事情的负荷仍然偏多，同时其他资源还留着抓手，因此这次匹配到了全自动兜底鸭。",
+      "事情的负荷仍然偏多，同时其他资源还留着抓手，因此这次匹配到了兜底鸭。",
     reasonEn:
       "Your load is still fairly high, while other resources offer some footholds. This match reflects being busy with something to lean on.",
     focus: ["pressure", "direction"],
@@ -187,7 +187,7 @@ export function scoreAnswers(answers, language = "zh") {
   );
   const rule = roleRules.find(({ matches }) => matches(values));
   const role = activeRoles.find(({ id }) => id === rule.id);
-  // 发芽是混合状态的兜底项，按这次回答选择解释维度。
+  // 测试苗是混合状态的兜底项，按这次回答选择解释维度。
   // 压力反向换算仅用于比较可用资源，不修改展示的压力负荷分数。
   const resourceRanking = dimensions
     .map(({ key }) => ({
@@ -204,7 +204,11 @@ export function scoreAnswers(answers, language = "zh") {
       : rule.focus;
 
   return {
-    role: { ...role, tags: [...role.tags] },
+    role: {
+      ...role,
+      tags: [...role.tags],
+      actionSteps: role.actionSteps.map((step) => ({ ...step })),
+    },
     metrics,
     evidence: [
       locale === "en" ? rule.reasonEn : rule.reason,

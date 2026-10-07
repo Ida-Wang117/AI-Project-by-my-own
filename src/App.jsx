@@ -13,6 +13,7 @@ import {
   Asterisk,
 } from "lucide-react";
 import Creature from "./Creature.jsx";
+import BlindBox from "./BlindBox.jsx";
 import { createStatusCard } from "./cardExport.js";
 import {
   questions as baseQuestions,
@@ -181,7 +182,7 @@ export default function App() {
         ? "今日物种 · 人在，状态不在。"
         : "Today's Creature · Here in body. Elsewhere in brain.";
     const description =
-      "人在，状态不在。12 道生活后台小问题，生成你的故障工牌。梗对生活，不对你；不交周报，不发鸡汤。";
+      "人在，状态不在。12 道题，拆一盒状态盲盒：短名字、欠嘴锐评、三步具体建议。梗对生活，不对你。";
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", translate(language, description));
@@ -252,7 +253,7 @@ export default function App() {
     const timer = window.setTimeout(() => {
       const calculated = scoreAnswers(answers, language);
       setResult(calculated);
-      setScreen("result");
+      setScreen("unboxing");
       setActionDone(false);
       try {
         sessionStorage.removeItem(sessionKey);
@@ -367,9 +368,9 @@ export default function App() {
           : `Todays-Creature-${role.id}.png`;
       anchor.click();
       window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-      setNotice(t("工牌已生成。不建议拿去找老板加薪。"));
+      setNotice(t("盲盒卡已保存。别拿去当绩效证明。"));
     } catch {
-      setNotice(t("工牌导出失败，试试复制分享链接。"));
+      setNotice(t("盲盒卡导出失败，试试复制分享链接。"));
     } finally {
       setSaving(false);
     }
@@ -382,7 +383,8 @@ export default function App() {
       ? roles.find((item) => item.id === modal.id)
       : null;
   const question = questions[step];
-  const isQuiz = screen === "quiz" || screen === "loading";
+  const isQuiz =
+    screen === "quiz" || screen === "loading" || screen === "unboxing";
   return (
     <>
       <header className="site-header">
@@ -447,7 +449,7 @@ export default function App() {
                 <br />
                 {t("12 道题，查查最近哪个后台在偷跑。")}
                 <br />
-                <strong>{t("不发优秀证明，发一张你的状态工牌。")}</strong>
+                <strong>{t("拆个状态盲盒，看看谁在加班。")}</strong>
               </p>
               <div className="hero-actions">
                 <button className="button primary" onClick={() => start()}>
@@ -493,10 +495,10 @@ export default function App() {
                 {t("诉求：再来一件事")}
               </span>
               <div className="hero-owl">
-                <Creature id="night-owl" title={t("脑内仍在开会的加班角色")} />
+                <BlindBox id="night-owl" title={t("脑内仍在开会的加班角色")} />
               </div>
               <div className="hero-cactus">
-                <Creature id="cactus" title={t("准备礼貌拒收新任务的角色")} />
+                <BlindBox id="cactus" title={t("准备礼貌拒收新任务的角色")} />
               </div>
               <span className="floating-label label-owl">
                 {t("人已下班。脑子打卡了吗？")}
@@ -568,7 +570,7 @@ export default function App() {
                       <span className="card-index mono">
                         {item.statusCode || "STATE / FILE"}
                       </span>
-                      <Creature id={id} title={item.name} />
+                      <BlindBox id={id} title={item.name} />
                       <span className="species-arrow">
                         <ArrowUpRight size={21} />
                       </span>
@@ -626,12 +628,8 @@ export default function App() {
               <article>
                 <span className="step-number">02</span>
                 <div>
-                  <h3>{t("领取状态工牌")}</h3>
-                  <p>
-                    {t(
-                      "一个有点欠的角色，几个不端着的词条。为什么匹配到它，报告里有依据。",
-                    )}
-                  </p>
+                  <h3>{t("拆开状态盲盒")}</h3>
+                  <p>{t("一只盲盒角色，一句欠嘴锐评，三步能动手的建议。")}</p>
                 </div>
               </article>
               <article>
@@ -775,7 +773,7 @@ export default function App() {
                   onClick={next}
                   disabled={answers[step] === undefined}
                 >
-                  {step === 11 ? t("生成我的状态工牌") : t("下一题")}{" "}
+                  {step === 11 ? t("生成我的状态盲盒") : t("下一题")}{" "}
                   <ArrowRight size={20} />
                 </button>
               </div>
@@ -806,6 +804,36 @@ export default function App() {
         </main>
       )}
 
+      {screen === "unboxing" && (
+        <main className="unboxing-page page-width" ref={mainRef} tabIndex={-1}>
+          <span className="eyebrow">STATE BOX / READY TO OPEN</span>
+          <h1>{t("状态已装盒。")}</h1>
+          <p>{t("里面装着近两周的你，附赠一句欠嘴点评。")}</p>
+          <div className="mystery-box" aria-hidden="true">
+            <div className="box-lid">
+              <span>PULL TO OPEN</span>
+            </div>
+            <div className="box-front">
+              <span className="box-series">TODAY'S CREATURE / SERIES 01</span>
+              <strong>?</strong>
+              <span className="box-barcode" />
+              <span>HANDLE WITH ATTITUDE</span>
+            </div>
+            <div className="box-side">STATUS INSIDE</div>
+          </div>
+          <button
+            className="button primary"
+            onClick={() => setScreen("result")}
+          >
+            {t("拆开看看")}
+            <ArrowUpRight size={22} />
+          </button>
+          <p className="unboxing-note">
+            {t("按你的回答装盒。开盒只揭晓，不重新抽签。")}
+          </p>
+        </main>
+      )}
+
       {(screen === "result" || screen === "shared") && role && (
         <main className="result-page page-width" ref={mainRef} tabIndex={-1}>
           <div className="result-topline">
@@ -822,7 +850,7 @@ export default function App() {
           {screen === "shared" && (
             <p className="shared-note">
               {t(
-                "这是朋友分享的状态工牌，不包含私人答案。你的后台情况，需要自己登记。",
+                "这是朋友拆出的状态盲盒，不包含私人答案。你的盒子，得自己回答问题来拆。",
               )}
             </p>
           )}
@@ -843,7 +871,7 @@ export default function App() {
                 <span>{t("有效期：近两周")}</span>
               </div>
               <div ref={resultArt}>
-                <Creature id={role.id} title={role.name} />
+                <BlindBox id={role.id} title={role.name} />
               </div>
               <span className="portrait-sticker">
                 {role.statusCode || role.tags[0]}
@@ -854,9 +882,7 @@ export default function App() {
             </div>
             <div className="result-copy">
               <span className="eyebrow">
-                {screen === "shared"
-                  ? t("本档案登记为")
-                  : t("你的后台岗位，暂定为")}
+                {screen === "shared" ? t("朋友拆出的是") : t("你拆到的是")}
               </span>
               <h1>{role.name}</h1>
               <p className="result-en mono">{role.en}</p>
@@ -883,7 +909,7 @@ export default function App() {
                   disabled={saving}
                 >
                   <Download size={18} />
-                  {saving ? t("正在制牌…") : t("保存我的状态工牌")}
+                  {saving ? t("正在制卡…") : t("保存我的盲盒卡")}
                 </button>
                 <button className="button outline" onClick={share}>
                   <Copy size={18} />
@@ -892,69 +918,25 @@ export default function App() {
               </div>
             </div>
           </div>
-          {screen === "result" && (
-            <section className="reflection">
-              <div>
-                <span className="eyebrow">
-                  MATCHING EVIDENCE / NO MYSTICISM
-                </span>
-                <h2>
-                  {t("不是凭空开嘴。")}
-                  <br />
-                  {t("下面是匹配依据。")}
-                </h2>
-                <p>
-                  {t("这是回答的规则映射，不是专业量表。")}
-                  <br />
-                  {t("条形只表示当前选择的倾向，没有好坏排名。")}
-                </p>
-                <button className="text-link" onClick={() => setModal("about")}>
-                  {t("看看匹配怎么来的")}
-                  <ArrowUpRight size={16} />
-                </button>
-              </div>
-              <div className="reflection-details">
-                <div className="metric-grid">
-                  {report.metrics.map((metric) => (
-                    <div className="metric" key={metric.key}>
-                      <div>
-                        <span>{metric.label}</span>
-                        <span>
-                          {metric.value < 34
-                            ? t("偏低")
-                            : metric.value < 67
-                              ? t("居中")
-                              : t("偏高")}
-                        </span>
-                      </div>
-                      <div className="metric-track">
-                        <span
-                          style={{
-                            width: `${metric.value}%`,
-                            background:
-                              metric.key === "pressure" ? "#ff9068" : "#365dea",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <ul className="evidence-list">
-                  {report.evidence.map((text, index) => (
-                    <li key={index}>
-                      <CornerDownRight size={17} />
-                      <span>{text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-          )}
-          <section className="tiny-action">
-            <span className="tiny-label">LOW-COST WORKAROUND</span>
+          <section className="tiny-action action-plan">
+            <span className="tiny-label">SMALL MOVES / NO LIFE OVERHAUL</span>
             <div>
-              <h2>{t("临时处理方案：先少跑一个进程。")}</h2>
-              <p>{role.tinyAction}</p>
+              <div className="action-plan-heading">
+                <h2>{t("今天就做这三步。")}</h2>
+                <span className="action-duration">{role.actionDuration}</span>
+              </div>
+              <p className="action-intro">{role.tinyAction}</p>
+              <ol className="action-steps">
+                {role.actionSteps.map((item, index) => (
+                  <li key={index}>
+                    <span className="action-step-number">0{index + 1}</span>
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
               <p className="do-not">
                 <strong>{t("今日先别：")}</strong>
                 {role.doNot}
@@ -989,6 +971,75 @@ export default function App() {
               )}
             </button>
           </section>
+          {screen === "result" && (
+            <details className="matching-details">
+              <summary>
+                {t("为什么拆到这只？")}
+                <ArrowRight size={17} />
+              </summary>
+              <section className="reflection">
+                <div>
+                  <span className="eyebrow">
+                    MATCHING EVIDENCE / NO MYSTICISM
+                  </span>
+                  <h2>
+                    {t("不是凭空开嘴。")}
+                    <br />
+                    {t("下面是匹配依据。")}
+                  </h2>
+                  <p>
+                    {t("这是回答的规则映射，不是专业量表。")}
+                    <br />
+                    {t("条形只表示当前选择的倾向，没有好坏排名。")}
+                  </p>
+                  <button
+                    className="text-link"
+                    onClick={() => setModal("about")}
+                  >
+                    {t("看看匹配怎么来的")}
+                    <ArrowUpRight size={16} />
+                  </button>
+                </div>
+                <div className="reflection-details">
+                  <div className="metric-grid">
+                    {report.metrics.map((metric) => (
+                      <div className="metric" key={metric.key}>
+                        <div>
+                          <span>{metric.label}</span>
+                          <span>
+                            {metric.value < 34
+                              ? t("偏低")
+                              : metric.value < 67
+                                ? t("居中")
+                                : t("偏高")}
+                          </span>
+                        </div>
+                        <div className="metric-track">
+                          <span
+                            style={{
+                              width: `${metric.value}%`,
+                              background:
+                                metric.key === "pressure"
+                                  ? "#ff9068"
+                                  : "#365dea",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <ul className="evidence-list">
+                    {report.evidence.map((text, index) => (
+                      <li key={index}>
+                        <CornerDownRight size={17} />
+                        <span>{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+            </details>
+          )}
           <p className="result-end">
             {t("报告到这里。别顺手给自己开个整改大会。")}
             <span>{t("生活已经够爱开会了。")}</span>
@@ -1052,7 +1103,7 @@ export default function App() {
                       background: item.color,
                     }}
                   >
-                    <Creature id={item.id} title={item.name} />
+                    <BlindBox id={item.id} title={item.name} />
                     <span>{item.name}</span>
                   </button>
                 ))}
@@ -1065,7 +1116,7 @@ export default function App() {
                   background: modalRole.color,
                 }}
               >
-                <Creature id={modalRole.id} title={modalRole.name} />
+                <BlindBox id={modalRole.id} title={modalRole.name} />
               </div>
               <span className="eyebrow">
                 {t("档案预览 \xB7 尚未登记你的回答")}
@@ -1075,7 +1126,7 @@ export default function App() {
               <p>{modalRole.description}</p>
               <blockquote>{modalRole.comfort}</blockquote>
               <button className="button primary" onClick={() => start()}>
-                {t("生成我的状态工牌")}
+                {t("生成我的状态盲盒")}
                 <ArrowUpRight size={19} />
               </button>
             </div>

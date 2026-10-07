@@ -154,6 +154,9 @@ test("scoring is deterministic and leaves answers and shared content unchanged",
   // Consumers can annotate their own result without changing future results.
   first.role.name = "locally changed";
   first.role.tags.push("local-only");
+  first.role.actionSteps[0].title = "local title";
+  first.role.actionSteps[0].body = "local body";
+  first.role.actionSteps.push({ title: "extra", body: "local-only" });
   first.metrics[0].value = -100;
   first.evidence[0] = "local-only";
   const fresh = scoreAnswers(answers);
@@ -230,6 +233,9 @@ test("English scoring does not mutate inputs or leak result changes into either 
   const editable = scoreAnswers(answers, "en");
   editable.role.name = "Changed locally";
   editable.role.tags.push("local tag");
+  editable.role.actionSteps[0].title = "Local title";
+  editable.role.actionSteps[0].body = "Local body";
+  editable.role.actionSteps.push({ title: "Extra", body: "Local-only" });
   editable.metrics[0].label = "local label";
   editable.metrics[0].value = -10;
   editable.evidence.push("local note");

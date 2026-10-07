@@ -1,17 +1,19 @@
+import { blindBoxSheetUrl, getSpritePosition } from "./blindBoxAssets.js";
+
 const ink = "#20231f";
 const paper = "#f1f0e8";
 
 const copy = {
   zh: {
-    brand: "今日物种 / 状态工牌",
+    brand: "今日物种 / 状态盲盒",
     validity: "有效期：近两周",
-    opinion: "本窗口意见",
+    opinion: "先动这一下",
     footer: "仅作状态嘴替，不作绩效证明。禁止用于自我整改大会。",
   },
   en: {
-    brand: "TODAY'S CREATURE / STATUS BADGE",
+    brand: "TODAY'S CREATURE / STATE BOX",
     validity: "BASED ON THE LAST TWO WEEKS",
-    opinion: "DESK'S TAKE",
+    opinion: "FIRST SMALL MOVE",
     footer:
       "A voice for your current state, not a performance review. No self-fix meetings required.",
   },
@@ -101,7 +103,7 @@ function shortenLines(ctx, lines, maxLines, width) {
   return result;
 }
 
-function bodyLayout(ctx, role, top, width, bottom) {
+function bodyLayout(ctx, role, top, width, bottom, instruction = role.comfort) {
   let layout;
   for (let step = 0; step <= 14; step += 1) {
     const scale = 1 - step * 0.02;
@@ -112,7 +114,7 @@ function bodyLayout(ctx, role, top, width, bottom) {
     setFont(ctx, roastSize, true);
     const roastLines = wrapLines(ctx, role.roast || role.tagline, width);
     setFont(ctx, comfortSize);
-    const comfortLines = wrapLines(ctx, role.comfort, width);
+    const comfortLines = wrapLines(ctx, instruction, width);
     const labelTop = top + roastLines.length * roastHeight + 20 * scale;
     const comfortTop = labelTop + 76 * scale;
     layout = {
@@ -150,6 +152,53 @@ function bodyLayout(ctx, role, top, width, bottom) {
   return layout;
 }
 
+function loadImage(source) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Character image could not load"));
+    image.src = source;
+  });
+}
+
+async function drawPortrait(ctx, role, svg) {
+  if (svg?.dataset?.blindBox !== undefined) {
+    // Rasterize the same-origin sheet directly: an external image inside a
+    // serialized SVG can be omitted when that SVG is loaded from a Blob URL.
+    const image = await loadImage(blindBoxSheetUrl);
+    const { column, row } = getSpritePosition(svg.dataset.blindBox || role.id);
+    const sourceWidth = image.naturalWidth / 4;
+    const sourceHeight = image.naturalHeight / 2;
+    const scale = Math.min(438 / sourceWidth, 420 / sourceHeight);
+    const width = sourceWidth * scale;
+    const height = sourceHeight * scale;
+    ctx.drawImage(
+      image,
+      column * sourceWidth,
+      row * sourceHeight,
+      sourceWidth,
+      sourceHeight,
+      231 + (438 - width) / 2,
+      213 + (420 - height) / 2,
+      width,
+      height,
+    );
+    return;
+  }
+
+  const imageUrl = URL.createObjectURL(
+    new Blob([new XMLSerializer().serializeToString(svg)], {
+      type: "image/svg+xml;charset=utf-8",
+    }),
+  );
+  try {
+    const image = await loadImage(imageUrl);
+    ctx.drawImage(image, 231, 213, 438, 420);
+  } finally {
+    URL.revokeObjectURL(imageUrl);
+  }
+}
+
 // Everything is rendered locally; the card includes no answers, identity or URL.
 export async function createStatusCard(role, svg, language = "zh") {
   const labels = copy[language] || copy.zh;
@@ -182,23 +231,7 @@ export async function createStatusCard(role, svg, language = "zh") {
   ctx.textAlign = "right";
   ctx.fillText(labels.validity, 816, 195);
   ctx.textAlign = "left";
-  let imageUrl;
-  try {
-    imageUrl = URL.createObjectURL(
-      new Blob([new XMLSerializer().serializeToString(svg)], {
-        type: "image/svg+xml;charset=utf-8",
-      }),
-    );
-    const img = new Image();
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = imageUrl;
-    });
-    ctx.drawImage(img, 231, 213, 438, 420);
-  } finally {
-    if (imageUrl) URL.revokeObjectURL(imageUrl);
-  }
+  await drawPortrait(ctx, role, svg);
   ctx.fillStyle = ink;
   ctx.textAlign = "center";
   fittedFont(ctx, role.name, 775, 39, true);
@@ -215,7 +248,11 @@ export async function createStatusCard(role, svg, language = "zh") {
   ctx.fillStyle = "#657353";
   writeLines(ctx, tagLines, { x: 65, y: 748, lineHeight: 27 });
   const textTop = Math.max(805, 748 + (tagLines.length - 1) * 27 + 54);
-  const body = bodyLayout(ctx, role, textTop, 768, 1225);
+  const firstStep = role.actionSteps?.[0];
+  const instruction = firstStep
+    ? [firstStep.title, firstStep.body].filter(Boolean).join("\n")
+    : role.comfort;
+  const body = bodyLayout(ctx, role, textTop, 768, 1225, instruction);
   ctx.fillStyle = ink;
   setFont(ctx, body.roastSize, true);
   writeLines(ctx, body.roastLines, {
